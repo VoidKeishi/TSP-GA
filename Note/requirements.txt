@@ -1,0 +1,11 @@
+- Algorithm
+    - Sử dụng cơ chế encode-decode: 0→4→5→1→2→3→0 = (0, 4, 5, 1, 2, 3)
+    - Chromosome: Là 1 lời giải
+    - Population: Tập hợp các lời giải
+    - Crossover: Suggest one-point Crossover
+    - Mutation: Suggest Swap Mutation
+    - Parent's selection
+- Design
+    - Main menu: Title, Help, Quit(Ask for confirmation)
+    - Start 
+    - Visualization: Both array and graph structure
