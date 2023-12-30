@@ -20,7 +20,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.controller.Controller">
    <children>
       <MenuBar>
         <menus>
@@ -34,7 +34,7 @@
       </MenuBar>
       <SplitPane dividerPositions="0.8" prefHeight="560.0">
         <items>
-          <AnchorPane minHeight="0.0" minWidth="0.0" />
+          <AnchorPane fx:id="drawingPane" minHeight="0.0" minWidth="0.0"/>
           <AnchorPane>
                <children>
                   <VBox alignment="TOP_CENTER">
