@@ -17,7 +17,7 @@ public class Individual {
 	// Generate random using Fisher-Yates shuffle Algorithm
 	public Individual(int cityNum) {
 	    ArrayList<Integer> chromosome = new ArrayList<>();
-	    for (int gene = 0; gene <= cityNum; gene++) {
+	    for (int gene = 0; gene < cityNum; gene++) {
 	        chromosome.add(gene);
 	    }
 	    Random rand = new Random();
@@ -29,6 +29,14 @@ public class Individual {
 	        int temp = chromosome.get(i);
 	        chromosome.set(i, chromosome.get(j));
 	        chromosome.set(j, temp);
+	    }
+	    this.chromosome = chromosome;
+	}
+	// Generate empty chromosome
+	public Individual(int cityNum, int placeholder) {
+		ArrayList<Integer> chromosome = new ArrayList<>();
+	    for (int gene = 0; gene < cityNum; gene++) {
+	    	chromosome.add(placeholder);
 	    }
 	    this.chromosome = chromosome;
 	}

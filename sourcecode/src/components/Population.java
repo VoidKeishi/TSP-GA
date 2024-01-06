@@ -8,9 +8,9 @@ public class Population {
 	private ArrayList<Individual> population = new ArrayList<Individual>();
 	// Constructor
 		// Generate random
-	public Population(int cityNum, int size) {
+	public Population(int populationSize, int cityNum) {
 		this.population = new ArrayList<Individual>();
-		for (int individualCount = 0; individualCount < size; individualCount++) {
+		for (int individualCount = 0; individualCount < populationSize; individualCount++) {
 			Individual individual = new Individual(cityNum);
 			this.population.add(individual);
 		}
@@ -40,3 +40,4 @@ public class Population {
 		return population;
 	}
 }
+
