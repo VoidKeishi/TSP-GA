@@ -1,3 +1,4 @@
+
 package geneticalgorithm;
 
 import components.Individual;
