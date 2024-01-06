@@ -156,18 +156,7 @@ public class Controller {
                 }
                 bestRoute = new Route(bestIndividual,nodes);
                 final Route displayRoute = bestRoute;
-                javafx.application.Platform.runLater(new Runnable() {
-                    @Override
-                    public void run() {
-                        addRoute(displayRoute);
-                    }
-                });
-                try {
-                    Thread.sleep(100);
-                } catch (InterruptedException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
+                addRoute(displayRoute);
             }
 
             // Print the best solution
