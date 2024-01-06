@@ -184,7 +184,7 @@
                                  </font>
                               </Label>
                               <Region HBox.hgrow="ALWAYS" />
-                              <Label fx:id="tfGenerations" text="0">
+                              <Label fx:id="lbGenerations" text="0">
                                  <font>
                                     <Font size="18.0" />
                                  </font>

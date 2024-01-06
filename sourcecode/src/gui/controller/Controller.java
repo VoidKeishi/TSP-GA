@@ -2,12 +2,15 @@ package gui.controller;
  
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import components.Individual;
 import components.Node;
 import components.Population;
 import components.Route;
 import geneticalgorithm.GeneticAlgorithm;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -16,6 +19,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
+import javafx.util.Duration;
  
 
 public class Controller {
@@ -24,7 +28,7 @@ public class Controller {
     int cityNum = 5;
     int crossOverPercentage = 70;
     int mutationPercentage = 30;
-    int generations = 100;
+    int maxGenerations = 100;
     // Genetic Algorithm
     Population population;
     GeneticAlgorithm ga;
@@ -58,7 +62,7 @@ public class Controller {
     private Label lbBestDistance;
 
     @FXML
-    private Label tfGenerations;
+    private Label lbGenerations;
 
     @FXML
     private Button btnStartStop;
@@ -121,7 +125,7 @@ public class Controller {
         populationSize = Integer.parseInt(tfPopulation.getText());
         crossOverPercentage = Integer.parseInt(tfCrossoverRate.getText());
         mutationPercentage = Integer.parseInt(tfMutationRate.getText());
-        generations = Integer.parseInt(tfGenerations.getText());
+		maxGenerations = Integer.parseInt(tfMaxGeneration.getText());
         		
     	ga = new GeneticAlgorithm(populationSize, cityNum, crossOverPercentage, mutationPercentage);
     	nodes = ga.generateNodes();
@@ -135,6 +139,7 @@ public class Controller {
     }
     @FXML
     private void startStop() {
+        int generations = maxGenerations;
         if ("Start".equals(btnStartStop.getText())) {
             // Logic to start the process
             btnStartStop.setText("Stop");
@@ -144,20 +149,28 @@ public class Controller {
             // Update fitness
             ga.updateFitness(population, nodes);
             this.currentState = new ArrayList<Line>();
-            // Evolve population for a certain number of generations
-            int generations = 100;
-            for (int i = 0; i < generations; i++) {
+
+            // Create a Timeline to schedule the updates
+            Timeline timeline = new Timeline();
+            timeline.setCycleCount(generations);
+            AtomicInteger i = new AtomicInteger(0);
+            // Create a KeyFrame that will be executed each generation
+            KeyFrame keyFrame = new KeyFrame(Duration.seconds(0.1), event -> {
                 population = ga.evolve(population);
                 ga.updateFitness(population, nodes);
                 population.sortByFitness();
                 bestIndividual = population.getIndividual(0);
-                if (bestRoute!=null) {
+                if (bestRoute != null) {
                     removeRoute(bestRoute);
                 }
-                bestRoute = new Route(bestIndividual,nodes);
-                final Route displayRoute = bestRoute;
-                addRoute(displayRoute);
-            }
+                bestRoute = new Route(bestIndividual, nodes);
+                addRoute(bestRoute);
+                lbBestDistance.setText(Double.toString(bestRoute.totalDistance()));
+                lbGenerations.setText(Integer.toString(i.incrementAndGet()));
+            });
+
+            timeline.getKeyFrames().add(keyFrame);
+            timeline.play();
 
             // Print the best solution
             population.sortByFitness();
