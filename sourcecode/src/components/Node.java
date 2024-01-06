@@ -3,12 +3,10 @@ package components;
 public class Node {
 	private int x;
 	private int y;
-	private int id;
 	
-	public Node(int x, int y, int id) {
+	public Node(int x, int y) {
 		this.x = x;
 		this.y = y;
-		this.id = id;
 	}
 	public int getX() {
 		return this.x;

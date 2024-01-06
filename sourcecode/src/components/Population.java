@@ -7,12 +7,17 @@ import java.util.List;
 public class Population {
 	private ArrayList<Individual> population = new ArrayList<Individual>();
 	// Constructor
+		// Generate random
 	public Population(int cityNum, int size) {
 		this.population = new ArrayList<Individual>();
 		for (int individualCount = 0; individualCount < size; individualCount++) {
 			Individual individual = new Individual(cityNum);
 			this.population.add(individual);
 		}
+	}
+		// Create empty
+	public Population(int populationSize) {
+		this.population = new ArrayList<Individual>(Collections.nCopies(populationSize, null));
 	}
 	// Getter & Setter
 	public ArrayList<Individual> getPopulation() {
