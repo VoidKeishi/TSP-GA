@@ -23,8 +23,8 @@ public class GeneticAlgorithm {
 	public Node[] generateNodes() {
 		Node[] nodes = new Node[this.cityNum];
 		for (int i = 0; i < this.cityNum; i++) {
-			int x = (int) (100 * Math.random() + 10);
-			int y = (int) (100 * Math.random() + 10);
+			int x = (int) (714 * Math.random()+35);
+            int y = (int) (472 * Math.random()+24);
 			nodes[i] = new Node(x, y);
 		}
 		return nodes;
