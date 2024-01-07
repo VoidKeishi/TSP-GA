@@ -109,7 +109,7 @@ public class Controller {
         for (int i = 0; i < cityNum - 1; i++) {
             createLine(routeNodes.get(i), routeNodes.get(i+1));
         }
-        createLine(routeNodes.get(0), routeNodes.get(cityNum-1));
+        createLine(routeNodes.get(routeNodes.size() - 1), routeNodes.get(0));
     }
     private void removeRoute(Route route) {
         ArrayList<Node> routeNodes = route.getRoute();
@@ -183,8 +183,8 @@ public class Controller {
         // Now you can proceed with loading
         ga = new GeneticAlgorithm(populationSize, cityNum, crossOverPercentage, mutationPercentage);
         nodes = ga.generateNodes();
-        for (Node node : nodes) {
-            createNode(node);
+        for (int i = 0; i < nodes.length; i++) {
+            createNode(nodes[i], i == 0, i + 1); // +1 if you want the numbers to start from 1 instead of 0
         }
     }
 
@@ -218,7 +218,7 @@ public class Controller {
             timeline.setCycleCount(generations);
             AtomicInteger i = new AtomicInteger(0);
             // Create a KeyFrame that will be executed each generation
-            KeyFrame keyFrame = new KeyFrame(Duration.seconds(0.1), event -> {
+            KeyFrame keyFrame = new KeyFrame(Duration.seconds(0.005), event -> {
                 population = ga.evolve(population);
                 ga.updateFitness(population, nodes);
                 population.sortByFitness();
@@ -290,15 +290,22 @@ public class Controller {
         clearPane();
     }
     
-    private void createNode(Node node) {
-    	int x = node.getX();
-    	int y = node.getY();
-        Circle point = new Circle(x, y, 5, Color.RED);
+    private void createNode(Node node, boolean isStart, int number) {
+        int x = node.getX();
+        int y = node.getY();
+        Color color = isStart ? Color.GREEN : Color.RED; // Use green for the starting point, red for others
+        Circle point = new Circle(x, y, 5, color);
         point.setStroke(Color.BLACK);
         point.setStrokeWidth(1);
         point.setCenterX(x);
         point.setCenterY(y);
         visualizePane.getChildren().addAll(point);
+
+        // Create a label with the number and add it to the pane
+        Label label = new Label(Integer.toString(number));
+        label.setLayoutX(x + 10); // Adjust these values as needed
+        label.setLayoutY(y);
+        visualizePane.getChildren().add(label);
     }
     
     private void clearPane() {
