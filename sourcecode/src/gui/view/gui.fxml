@@ -21,12 +21,13 @@
    <children>
       <MenuBar>
         <menus>
-          <Menu mnemonicParsing="false" onAction="#help" text="Help">
+          <Menu mnemonicParsing="false" text="Menu">
             <items>
-              <MenuItem mnemonicParsing="false" text="About" />
+              <MenuItem mnemonicParsing="false" onAction="#help" text="Help" />
+                  <MenuItem mnemonicParsing="false" onAction="#quit" text="Quit" />
+                  <MenuItem mnemonicParsing="false" onAction="#close" text="Close" />
             </items>
           </Menu>
-          <Menu mnemonicParsing="false" onAction="#quit" text="Quit" />
         </menus>
       </MenuBar>
       <SplitPane dividerPositions="0.8" prefHeight="560.0">
