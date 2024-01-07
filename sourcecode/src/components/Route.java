@@ -1,5 +1,6 @@
 package components;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class Route {
@@ -24,6 +25,8 @@ public class Route {
 			totalDistance += this.route.get(i).getDistance(this.route.get(i+1));
 		}
 		totalDistance += this.route.get(this.route.size() - 1).getDistance(this.route.get(0));
+	    DecimalFormat df = new DecimalFormat("#.##");
+	    totalDistance = Double.valueOf(df.format(totalDistance));
 		return totalDistance;
 	}
 }

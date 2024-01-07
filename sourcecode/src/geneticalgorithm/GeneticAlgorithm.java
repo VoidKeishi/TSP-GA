@@ -48,6 +48,7 @@ public class GeneticAlgorithm {
 		}
 	}
 	public Population evolve(Population population) {
+		population.sortByFitness();
 		Population result = new Population(population.getSize()*2);
 		// Keep original population
 	    for (int i = 0; i < population.getSize(); i++) {
@@ -59,13 +60,15 @@ public class GeneticAlgorithm {
 	        int index2 = new Random().nextInt(population.getSize());
 	        Individual parent1 = population.getIndividual(index1);
 	        Individual parent2 = population.getIndividual(index2);
-	     // Random crossover type
+	        // Random crossover type
 	        CrossOver crossover;
-	        int crossOverType = new Random().nextInt(1);
+	        int crossOverType = new Random().nextInt(2);
 	        switch (crossOverType) {
 	        	case 0:
 	        		crossover = new OrderedCrossOver(parent1, parent2);
 	        		break;
+	        	case 1:
+	        		crossover = new PartiallyMappedCrossOver(parent1, parent2);
 	        	default:
 	        		crossover = new OrderedCrossOver(parent1, parent2);
 	        		break;
@@ -75,7 +78,7 @@ public class GeneticAlgorithm {
 	    }
 		// Generate by mutation
 	    for (int i = population.getSize() + crossOverNum; i < population.getSize() + crossOverNum + mutationNum; i++) {
-	        int index = new Random().nextInt(population.getSize());
+	        int index = new Random().nextInt(population.getSize() - 1)+1;
 	        Individual original = population.getIndividual(index);
 	        // Random mutation type
 	        Mutation mutation;

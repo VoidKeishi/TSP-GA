@@ -70,4 +70,7 @@ public class Individual {
 		s.append(chromosome.get(0)+1);
 		return s.toString();
 	}
+    public boolean contains(int value) {
+        return chromosome.contains(value);
+    }
 }

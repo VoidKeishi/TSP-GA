@@ -10,10 +10,10 @@ public class Console {
     public static void main(String[] args) {
         // Define parameters
         int populationSize = 100;
-        int cityNum = 5;
+        int cityNum = 10;
         int crossOverPercentage = 70;
         int mutationPercentage = 30;
-
+        int generations = 100;
         // Create a GeneticAlgorithm object
         GeneticAlgorithm ga = new GeneticAlgorithm(populationSize, cityNum, crossOverPercentage, mutationPercentage);
 
@@ -29,10 +29,13 @@ public class Console {
         ga.updateFitness(population, nodes);
 
         // Evolve population for a certain number of generations
-        int generations = 100;
         for (int i = 0; i < generations; i++) {
-            population = ga.evolve(population);
-            ga.updateFitness(population, nodes);
+        	population = ga.evolve(population);
+        	ga.updateFitness(population, nodes);
+            population.sortByFitness();
+            Individual bestIndividual = population.getIndividual(0);
+            Route bestRoute = new Route(bestIndividual, nodes);
+            System.out.println("Total distance: " + bestRoute.totalDistance());
         }
 
         // Print the best solution

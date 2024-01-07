@@ -1,6 +1,5 @@
 package geneticalgorithm;
 
-import java.util.ArrayList;
 import java.util.Random;
 import components.Individual;
 
