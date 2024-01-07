@@ -24,12 +24,12 @@
    <children>
       <MenuBar>
         <menus>
-          <Menu mnemonicParsing="false" onAction="#help" text="Help">
+          <Menu mnemonicParsing="false" text="Menu">
             <items>
-              <MenuItem mnemonicParsing="false" text="About" />
+              <MenuItem mnemonicParsing="false" onAction="#help" text="How to use" />
+              <MenuItem mnemonicParsing="false" onAction="#quit" text="Quit" />
             </items>
           </Menu>
-          <Menu mnemonicParsing="false" onAction="#quit" text="Quit" />
         </menus>
       </MenuBar>
       <SplitPane dividerPositions="0.8" prefHeight="560.0">
@@ -206,7 +206,7 @@
         </items>
       </SplitPane>
       <AnchorPane maxWidth="1.7976931348623157E308" />
-      <TextArea fx:id="logArea" prefHeight="120.0" prefWidth="1084.0">
+      <TextArea fx:id="logArea" editable="false" prefHeight="120.0" prefWidth="1084.0">
          <VBox.margin>
             <Insets left="10.0" top="10.0" />
          </VBox.margin>

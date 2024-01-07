@@ -16,9 +16,12 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -126,14 +129,62 @@ public class Controller {
         alert.setContentText(message);
         alert.showAndWait();
     }
-    
     @FXML
-    public void help() {
-    	
+    private void help() {
+        // Create a custom dialog
+        Dialog<Void> dialog = new Dialog<>();
+        dialog.setTitle("Help");
+        dialog.setHeaderText("How to Use the Application");
+
+        // Set the icon (optional)
+        // dialog.setGraphic(new ImageView(...));
+
+        // Set the content of the dialog
+        GridPane content = new GridPane();
+        content.setHgap(10);
+        content.setVgap(10);
+
+        // Add steps to the content
+        Label step1Label = new Label("Step 1:");
+        TextArea step1Text = new TextArea("Enter the number of cities in the 'Cities' field.");
+        step1Text.setWrapText(true);
+        step1Text.setEditable(false);
+
+        Label step2Label = new Label("Step 2:");
+        TextArea step2Text = new TextArea("Set other parameters such as 'Max Generation,' 'Population Size,' etc.");
+        step2Text.setWrapText(true);
+        step2Text.setEditable(false);
+
+        Label step3Label = new Label("Step 3:");
+        TextArea step3Text = new TextArea("Click the 'Start' button to run the algorithm.");
+        step3Text.setWrapText(true);
+        step3Text.setEditable(false);
+
+        content.addRow(0, step1Label, step1Text);
+        content.addRow(1, step2Label, step2Text);
+        content.addRow(2, step3Label, step3Text);
+
+        dialog.getDialogPane().setContent(content);
+
+        // Add buttons to the dialog (OK button only)
+        dialog.getDialogPane().getButtonTypes().add(javafx.scene.control.ButtonType.OK);
+
+        // Show the dialog
+        dialog.showAndWait();
     }
     @FXML
-    public void quit() {
-    	
+    private void quit() {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation");
+        alert.setHeaderText(null);
+        alert.setContentText("Are you sure you want to quit?");
+
+        alert.showAndWait().ifPresent(response -> {
+            if (response == ButtonType.OK) {
+                // User clicked OK, so we exit the application
+                Platform.exit();
+            }
+        });
     }
     @FXML
     public void load() {
@@ -277,9 +328,20 @@ public class Controller {
     
     @FXML 
     private void reset() {
+    	if (isRunning) {
+            // Display a warning dialog if the process is running
+            showAlert("Cannot reset while the process is running. Please stop the process first.", Alert.AlertType.WARNING);
+            return;
+        }
+    	Timeline timeline = (Timeline) btnStartStop.getUserData();
+        if(timeline == null) {
+        	showAlert("There's nothing to reset !", Alert.AlertType.WARNING);
+        	return;
+        }
+    	
     	btnStartStop.setText("Start");
     	btnStartStop.setVisible(true);
-        Timeline timeline = (Timeline) btnStartStop.getUserData();
+        
         timeline.pause();
         isRunning = false;
     	nodes = null;
@@ -289,6 +351,8 @@ public class Controller {
         lbGenerations.setText(null);
         clearPane();
     }
+    
+    
     
     private void createNode(Node node) {
     	int x = node.getX();
