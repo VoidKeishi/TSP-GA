@@ -1,14 +1,14 @@
 package geneticalgorithm;
-
+ 
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
-
+ 
 import components.Individual;
 import components.Node;
 import components.Population;
 import components.Route;
-
+ 
 public class GeneticAlgorithm {
 	private static final int PANE_WIDTH = 780;
     private static final int PANE_HEIGHT = 558;
@@ -61,13 +61,13 @@ public class GeneticAlgorithm {
 	    }
 		// Generate by crossover
 	    for (int i = population.getSize(); i < population.getSize() + crossOverNum; i++) {
-	        int index1 = new Random().nextInt(population.getSize());
-	        int index2 = new Random().nextInt(population.getSize());
+	        int index1 = RANDOM.nextInt(population.getSize());
+	        int index2 = RANDOM.nextInt(population.getSize());
 	        Individual parent1 = population.getIndividual(index1);
 	        Individual parent2 = population.getIndividual(index2);
 	        // Random crossover type
 	        CrossOver crossover;
-	        int crossOverType = new Random().nextInt(2);
+	        int crossOverType = RANDOM.nextInt(2);
 	        switch (crossOverType) {
 	        	case 0:
 	        		crossover = new OrderedCrossOver(parent1, parent2);
@@ -83,11 +83,11 @@ public class GeneticAlgorithm {
 	    }
 		// Generate by mutation
 	    for (int i = population.getSize() + crossOverNum; i < population.getSize() + crossOverNum + mutationNum; i++) {
-	        int index = new Random().nextInt(population.getSize() - 1)+1;
+	        int index = RANDOM.nextInt(population.getSize() - 1)+1;
 	        Individual original = population.getIndividual(index);
 	        // Random mutation type
 	        Mutation mutation;
-	        int mutationType = new Random().nextInt(2);
+	        int mutationType = RANDOM.nextInt(2);
 	        switch(mutationType){
 	            case 0:
 	                mutation = new SwapMutation(original);
