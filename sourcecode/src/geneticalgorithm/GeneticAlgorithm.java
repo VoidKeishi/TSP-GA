@@ -10,6 +10,11 @@ import components.Population;
 import components.Route;
 
 public class GeneticAlgorithm {
+	private static final int PANE_WIDTH = 780;
+    private static final int PANE_HEIGHT = 558;
+    private static final int X_OFFSET = 28;
+    private static final int Y_OFFSET = 20;
+    private static final Random RANDOM = new Random();
 	private int mutationNum;
 	private int crossOverNum;
 	private int populationSize;
@@ -21,14 +26,14 @@ public class GeneticAlgorithm {
 		this.cityNum = cityNum;
 	}
 	public Node[] generateNodes() {
-		Node[] nodes = new Node[this.cityNum];
-		for (int i = 0; i < this.cityNum; i++) {
-			int x = (int) (714 * Math.random()+35);
-            int y = (int) (472 * Math.random()+24);
-			nodes[i] = new Node(x, y);
-		}
-		return nodes;
-	}
+        Node[] nodes = new Node[this.cityNum];
+        for (int i = 0; i < this.cityNum; i++) {
+            int x = (int) ((PANE_WIDTH - 2 * X_OFFSET) * RANDOM.nextDouble() + X_OFFSET);
+            int y = (int) ((PANE_HEIGHT - 2 * Y_OFFSET) * RANDOM.nextDouble() + Y_OFFSET);
+            nodes[i] = new Node(x, y);
+        }
+        return nodes;
+    }
 	public Population initializePopulation() {
 		return new Population(this.populationSize, cityNum);
 	}
