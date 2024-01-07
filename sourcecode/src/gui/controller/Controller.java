@@ -12,6 +12,7 @@ import geneticalgorithm.GeneticAlgorithm;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -19,6 +20,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -27,12 +29,18 @@ import javafx.util.Duration;
  
 
 public class Controller {
+	// Constant
+	static final double FAST = 0.005;
+	static final double MEDIUM = 0.02;
+	static final double SLOW = 0.1;
+	
 	// Parameter
     int populationSize = 100;
     int cityNum = 5;
     int crossOverPercentage = 70;
     int mutationPercentage = 30;
     int maxGenerations = 100;
+    double delayTime = MEDIUM;
     
     // Genetic Algorithm
     Population population;
@@ -74,6 +82,24 @@ public class Controller {
     
     @FXML 
     private TextArea logArea;
+    
+    @FXML
+    private ToggleGroup Speed;
+    
+    @FXML
+    void spdFast(ActionEvent event) {
+    	delayTime = FAST;
+    }
+
+    @FXML
+    void spdMedium(ActionEvent event) {
+    	delayTime = MEDIUM;
+    }
+
+    @FXML
+    void spdSlow(ActionEvent event) {
+    	delayTime = SLOW;
+    }
     
     private void createLine(Node node1,Node node2) {
     	int x1 = node1.getX();
@@ -218,7 +244,7 @@ public class Controller {
             timeline.setCycleCount(generations);
             AtomicInteger i = new AtomicInteger(0);
             // Create a KeyFrame that will be executed each generation
-            KeyFrame keyFrame = new KeyFrame(Duration.seconds(0.005), event -> {
+            KeyFrame keyFrame = new KeyFrame(Duration.seconds(delayTime), event -> {
                 population = ga.evolve(population);
                 ga.updateFitness(population, nodes);
                 population.sortByFitness();
