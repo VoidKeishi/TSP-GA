@@ -17,14 +17,14 @@ public class OrderedCrossOver extends CrossOver {
         while(endPos==startPos) {
         	endPos = rand.nextInt(chromosomeLength - 1) + 1;
         }
-        // Make the startPos less than endPos
+        // Make sure the startPos less than endPos
         if (startPos > endPos) {
             int temp = startPos;
             startPos = endPos;
             endPos = temp;
         }
 
-        // Loop and add the sub tour from parent1 to our child
+        // Loop and add the segment from parent1 to our child
         for (int i = startPos; i < endPos; i++) {
             child.setElement(i, parent1.getElement(i));
         }
