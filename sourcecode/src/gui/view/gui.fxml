@@ -25,7 +25,6 @@
             <items>
               <MenuItem mnemonicParsing="false" onAction="#help" text="Help" />
                   <MenuItem mnemonicParsing="false" onAction="#quit" text="Quit" />
-                  <MenuItem mnemonicParsing="false" onAction="#close" text="Close" />
             </items>
           </Menu>
         </menus>
