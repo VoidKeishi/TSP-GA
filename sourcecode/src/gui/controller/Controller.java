@@ -17,14 +17,18 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
+import javafx.stage.Stage;
 import javafx.util.Duration;
  
 
@@ -155,11 +159,50 @@ public class Controller {
     
     @FXML
     public void help() {
-    	
+        Dialog<String> dialog = new Dialog<>();
+        dialog.setTitle("Help");
+        dialog.setHeaderText("How to use the program");
+
+        // Set the button types.
+        dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK);
+
+        // Create the explanation label and add it to a dialog pane.
+        String explanationText = "This program is a visualization of a Genetic Algorithm solving the Traveling Salesman Problem.\n\n" +
+                                 "Here's how to use it:\n\n" +
+                                 "1. Number of Cities: Enter the number of cities that the algorithm will try to find the shortest route for. The cities will be randomly generated on the map.\n" +
+                                 "2. Max Generations: Enter the maximum number of generations that the algorithm will run for. A generation is a complete cycle of creating a new population from the current one.\n" +
+                                 "3. Population Size: Enter the size of the population in each generation. The population is a set of possible routes.\n" +
+                                 "4. Crossover %: Enter the percentage of the next generation that will be created by crossover. Crossover is a process where two routes are combined to create a new one.\n"+
+                                 "5. Mutation %: Enter the percentage of the next generation that will be created by mutation. Mutation is a process where a route is slightly altered to create a new one.\n\n"+
+                                 "After entering these parameters, click 'Load' to generate the cities. Then, click 'Start' to begin the algorithm. You can pause the algorithm at any time by clicking 'Pause'.\n"+
+                                 "The algorithm can be reset by clicking 'Reset', which will clear the map and allow you to enter new parameters.\n"+
+                                 "The 'Fast', 'Medium', and 'Slow' buttons control the speed of the visualization.\n"+
+                                 "The best route found so far and the number of generations passed are displayed at the bottom of the screen.";
+        Label explanation = new Label(explanationText);
+        dialog.getDialogPane().setContent(explanation);
+        Stage stage = (Stage) dialog.getDialogPane().getScene().getWindow();
+        Image icon = new Image(getClass().getResourceAsStream("/gui/view/help.png"));
+        stage.getIcons().add(icon);
+        // Show the dialog and wait for the user to close it
+        dialog.showAndWait();
     }
+
     @FXML
     public void quit() {
-    	
+        Alert alert = new Alert(AlertType.CONFIRMATION);
+        alert.setTitle("Quit");
+        alert.setHeaderText("Quit the application");
+        alert.setContentText("Are you sure you want to quit?");
+        Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+        Image icon = new Image(getClass().getResourceAsStream("/gui/view/quit.png"));
+        stage.getIcons().add(icon);
+        // Handle the result of the confirmation alert.
+        alert.showAndWait().ifPresent(response -> {
+            if (response == ButtonType.OK) {
+                // User chose OK, so quit the application.
+                Platform.exit();
+            }
+        });
     }
     @FXML
     public void load() {
