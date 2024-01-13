@@ -1,6 +1,7 @@
 package gui.controller;
  
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -105,35 +106,43 @@ public class Controller {
     	delayTime = SLOW;
     }
     
+    private void createNode(Node node, boolean isStart, int number) {
+        int x = node.getX();
+        int y = node.getY();
+        Color color = isStart ? Color.GREEN : Color.RED; // Use green for the starting point, red for others
+        Circle point = new Circle(x, y, 5, color);
+        point.setStroke(Color.BLACK);
+        point.setStrokeWidth(1);
+        point.setCenterX(x);
+        point.setCenterY(y);
+        visualizePane.getChildren().addAll(point);
+
+        // Create a label with the number and add it to the pane
+        Label label = new Label(Integer.toString(number));
+        label.setLayoutX(x + 10); // Adjust these values as needed
+        label.setLayoutY(y);
+        visualizePane.getChildren().add(label);
+    }
+    
     private void createLine(Node node1,Node node2) {
-    	int x1 = node1.getX();
-    	int y1 = node1.getY();
-    	int x2 = node2.getX();
-    	int y2 = node2.getY();
-        Line line = new Line(x1,y1,x2,y2);
+        Line line = new Line(node1.getX(),node1.getY(),node2.getX(),node2.getY());
         currentState.add(line);
         visualizePane.getChildren().add(line);
     }
     
-    private void deleteLine(Node node1,Node node2) {
-    	for (Line line : currentState) {
-    		if (line.getStartX() != node1.getX()) {
-    			continue;
-    		}
-    		if (line.getStartY() != node1.getY()) {
-    			continue;
-    		}
-    		if (line.getEndX() != node2.getX()) {
-    			continue;
-    		}
-    		if (line.getEndY() != node2.getY()) {
-    			continue;
-    		}
-    		currentState.remove(line);
-            visualizePane.getChildren().remove(line);
-    		break;
-    	}
+    private void deleteLine(Node node1, Node node2) {
+        Iterator<Line> iterator = currentState.iterator();
+        while (iterator.hasNext()) {
+            Line line = iterator.next();
+            if (line.getStartX() == node1.getX() && line.getStartY() == node1.getY() &&
+                line.getEndX() == node2.getX() && line.getEndY() == node2.getY()) {
+                iterator.remove();
+                visualizePane.getChildren().remove(line);
+                break;
+            }
+        }
     }
+
     private void addRoute(Route route) {
         ArrayList<Node> routeNodes = route.getRoute();
         for (int i = 0; i < cityNum - 1; i++) {
@@ -141,6 +150,7 @@ public class Controller {
         }
         createLine(routeNodes.get(routeNodes.size() - 1), routeNodes.get(0));
     }
+    
     private void removeRoute(Route route) {
         ArrayList<Node> routeNodes = route.getRoute();
         for (int i = 0; i < routeNodes.size() - 1; i++) {
@@ -258,10 +268,6 @@ public class Controller {
     }
 
     @FXML
-    public void printRoute() {
-    	
-    }
-    @FXML
     private void startStop() {
     	if (nodes == null || nodes.length == 0) {
             // Nodes are not available, show a warning dialog
@@ -357,24 +363,6 @@ public class Controller {
         lbBestDistance.setText(null);
         lbGenerations.setText(null);
         clearPane();
-    }
-    
-    private void createNode(Node node, boolean isStart, int number) {
-        int x = node.getX();
-        int y = node.getY();
-        Color color = isStart ? Color.GREEN : Color.RED; // Use green for the starting point, red for others
-        Circle point = new Circle(x, y, 5, color);
-        point.setStroke(Color.BLACK);
-        point.setStrokeWidth(1);
-        point.setCenterX(x);
-        point.setCenterY(y);
-        visualizePane.getChildren().addAll(point);
-
-        // Create a label with the number and add it to the pane
-        Label label = new Label(Integer.toString(number));
-        label.setLayoutX(x + 10); // Adjust these values as needed
-        label.setLayoutY(y);
-        visualizePane.getChildren().add(label);
     }
     
     private void clearPane() {
