@@ -38,8 +38,8 @@ public class Controller {
 	static final double FAST = 0.005;
 	static final double MEDIUM = 0.02;
 	static final double SLOW = 0.1;
-	static final Color START_POINT = Color.GREEN;
-	static final Color POINT = Color.YELLOW;
+	static final Color START_POINT = Color.ORANGE;
+	static final Color POINT = Color.GREEN;
 	static final Color NEW_LINE = Color.RED;
 	static final Color OLD_LINE = Color.BLUE;
 	
