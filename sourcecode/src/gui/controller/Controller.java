@@ -160,8 +160,6 @@ public class Controller {
                 Line line = iterator.next();
                 line.setStroke(OLD_LINE);
                 previousState.add(line);
-                visualizePane.getChildren().remove(line);
-                visualizePane.getChildren().add(line);
                 iterator.remove();
             }
         }
