@@ -38,6 +38,10 @@ public class Controller {
 	static final double FAST = 0.005;
 	static final double MEDIUM = 0.02;
 	static final double SLOW = 0.1;
+	static final Color START_POINT = Color.GREEN;
+	static final Color POINT = Color.YELLOW;
+	static final Color NEW_LINE = Color.RED;
+	static final Color OLD_LINE = Color.BLUE;
 	
 	// Parameter
     int populationSize = 100;
@@ -54,7 +58,8 @@ public class Controller {
     Route bestRoute;
     
     // GUI
-    List<Line> currentState;
+    List<Line> currentState = new ArrayList<>();
+    List<Line> previousState = new ArrayList<>();
     private boolean isRunning = false;
 	Node[] nodes;
     
@@ -109,7 +114,7 @@ public class Controller {
     private void createNode(Node node, boolean isStart, int number) {
         int x = node.getX();
         int y = node.getY();
-        Color color = isStart ? Color.GREEN : Color.RED; // Use green for the starting point, red for others
+        Color color = isStart ? START_POINT : POINT; // Use green for the starting point, red for others
         Circle point = new Circle(x, y, 5, color);
         point.setStroke(Color.BLACK);
         point.setStrokeWidth(1);
@@ -124,40 +129,44 @@ public class Controller {
         visualizePane.getChildren().add(label);
     }
     
-    private void createLine(Node node1,Node node2) {
+    private void createLine(Node node1,Node node2,Color color) {
         Line line = new Line(node1.getX(),node1.getY(),node2.getX(),node2.getY());
+        line.setStroke(color);
         currentState.add(line);
         visualizePane.getChildren().add(line);
     }
     
-    private void deleteLine(Node node1, Node node2) {
-        Iterator<Line> iterator = currentState.iterator();
-        while (iterator.hasNext()) {
-            Line line = iterator.next();
-            if (line.getStartX() == node1.getX() && line.getStartY() == node1.getY() &&
-                line.getEndX() == node2.getX() && line.getEndY() == node2.getY()) {
-                iterator.remove();
-                visualizePane.getChildren().remove(line);
-                break;
-            }
-        }
-    }
 
     private void addRoute(Route route) {
         ArrayList<Node> routeNodes = route.getRoute();
         for (int i = 0; i < cityNum - 1; i++) {
-            createLine(routeNodes.get(i), routeNodes.get(i+1));
+            createLine(routeNodes.get(i), routeNodes.get(i+1),NEW_LINE);
         }
-        createLine(routeNodes.get(routeNodes.size() - 1), routeNodes.get(0));
+        createLine(routeNodes.get(routeNodes.size() - 1), routeNodes.get(0),NEW_LINE);
     }
     
-    private void removeRoute(Route route) {
-        ArrayList<Node> routeNodes = route.getRoute();
-        for (int i = 0; i < routeNodes.size() - 1; i++) {
-            deleteLine(routeNodes.get(i), routeNodes.get(i + 1));
+    private void updateRoutes() {
+        if (previousState != null) {
+            Iterator<Line> iterator = previousState.iterator();
+            while (iterator.hasNext()) {
+                Line line = iterator.next();
+                visualizePane.getChildren().remove(line);
+                iterator.remove();
+            }
         }
-        deleteLine(routeNodes.get(routeNodes.size() - 1), routeNodes.get(0));
+        if (currentState != null) {
+            Iterator<Line> iterator = currentState.iterator();
+            while (iterator.hasNext()) {
+                Line line = iterator.next();
+                line.setStroke(OLD_LINE);
+                previousState.add(line);
+                visualizePane.getChildren().remove(line);
+                visualizePane.getChildren().add(line);
+                iterator.remove();
+            }
+        }
     }
+    
     
     // Helper method to show alerts
     private void showAlert(String message, AlertType alertType) {
@@ -298,9 +307,7 @@ public class Controller {
                 ga.updateFitness(population, nodes);
                 population.sortByFitness();
                 bestIndividual = population.getIndividual(0);
-                if (bestRoute != null) {
-                    removeRoute(bestRoute);
-                }
+                updateRoutes();
                 bestRoute = new Route(bestIndividual, nodes);
                 addRoute(bestRoute);
                 double roundedDistance = Math.ceil(bestRoute.totalDistance() * 100) / 100; // Round up to 2 decimal places
